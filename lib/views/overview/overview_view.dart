@@ -224,7 +224,7 @@ class Overview extends StatelessWidget {
                   patternList: _buildPatterns(),
                   selectable: true,
                   maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                  overflow: TextOverflow.visible,
                   defaultStyle: _selectStyle(context),
                 ),
               ),
@@ -251,7 +251,7 @@ class Overview extends StatelessWidget {
               style: TextStyle(
                 fontFeatures: [FontFeature.tabularFigures()],
               ),
-              text: '      '),
+              text: '  '),
         ),
         // WARNING
         const EasyRichTextPattern(
@@ -260,7 +260,23 @@ class Overview extends StatelessWidget {
             color: Colors.yellow,
             fontFeatures: [FontFeature.tabularFigures()],
           ),
-          // suffixInlineSpan: const TextSpan(text: ''),
+          suffixInlineSpan: TextSpan(
+              style: TextStyle(
+                fontFeatures: [FontFeature.tabularFigures()],
+              ),
+              text: ''),
+        ),
+        const EasyRichTextPattern(
+          targetString: 'WARN',
+          style: TextStyle(
+            color: Colors.yellow,
+            fontFeatures: [FontFeature.tabularFigures()],
+          ),
+          suffixInlineSpan: TextSpan(
+              style: TextStyle(
+                fontFeatures: [FontFeature.tabularFigures()],
+              ),
+              text: ' '),
         ),
         // ERROR
         const EasyRichTextPattern(
@@ -273,7 +289,7 @@ class Overview extends StatelessWidget {
               style: TextStyle(
                 fontFeatures: [FontFeature.tabularFigures()],
               ),
-              text: '    '),
+              text: ''),
         ),
         // CRITICAL
         const EasyRichTextPattern(

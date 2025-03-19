@@ -19,20 +19,16 @@ class Nav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final NavCtrl controller = Get.find();
-
-    return GetX<NavCtrl>(builder: (controller) {
-      return NavigationRail(
-        selectedIndex: controller.selectedIndex.value,
-        onDestinationSelected: (value) => {controller.switchScript(value)},
-        labelType: NavigationRailLabelType.all, // 就是是否显示文字
-        // elevation: 20, // 影深度
-        useIndicator: true, // 指示器
-        trailing: _trailing(),
-        minWidth: 48,
-        destinations: _destinations(controller.scriptName),
-      );
-    });
+    return SingleChildScrollView(
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height - 50,
+        ),
+        child: IntrinsicHeight(
+          child: _navigationRail(),
+        ),
+      ),
+    );
   }
 
   List<NavigationRailDestination> _destinations(List<String> names) {
@@ -60,9 +56,22 @@ class Nav extends StatelessWidget {
     }
   }
 
+  Widget _navigationRail() {
+    return GetX<NavCtrl>(builder: (controller) {
+      return NavigationRail(
+        selectedIndex: controller.selectedIndex.value,
+        onDestinationSelected: (value) => {controller.switchScript(value)},
+        labelType: NavigationRailLabelType.all, // 就是是否显示文字
+        // elevation: 20, // 影深度
+        useIndicator: true, // 指示器
+        trailing: _trailing(),
+        minWidth: 48,
+        destinations: _destinations(controller.scriptName),
+      );
+    });
+  }
+
   Widget _trailing() {
-    // NavCtrl controllerNav = Get.find<NavCtrl>();
-    // SettingsController controllerSetting = Get.find<SettingsController>();
     return <Widget>[
       IconButton(icon: const Icon(Icons.add), onPressed: addButton),
       // _DarkMode(onPressed: controllerSetting.updateTheme),

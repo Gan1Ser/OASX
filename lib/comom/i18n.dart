@@ -191,6 +191,12 @@ class Messages extends Translations {
         I18n.duel: '斗技',
         I18n.activity_shikigami: '当期爬塔',
         I18n.meta_demon: '超鬼王',
+        I18n.demon_retreat: '首领退治',
+        I18n.nian_true: '现世年兽',
+        I18n.abyss_trials: '狭间幻境',
+        I18n.dye_trials: '灵染试炼',
+        I18n.back_up: '日志备份',
+        I18n.other: '其他',
       };
   Map<String, String> get _us_menu => {
         I18n.log_out: 'Logout',

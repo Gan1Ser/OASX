@@ -119,6 +119,14 @@ class I18n {
   static const String duel = 'Duel';
   static const String activity_shikigami = 'ActivityShikigami';
   static const String meta_demon = 'MetaDemon';
+  static const String nian_true = 'NianTrue';
+  static const String abyss_trials = 'AbyssTrials';
+  static const String dye_trials = 'DyeTrials';
+  static const String back_up = 'BackUp';
+  static const String other = 'other';
+  static const String demon_retreat = 'DemonRetreat';
+
+
   // script 脚本配置
   static const String device = 'device';
   static const String error = 'error';

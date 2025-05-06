@@ -140,25 +140,42 @@ class OverviewController extends GetxController {
   // }
 
 
-  // 在OverviewController中保持原有addLog方法
+// 修改后的 addLog 方法（OverviewController 中）
   void addLog(String message) {
-    final lines = message.replaceAll('\r\n', ''); // 处理含换行符的消息
-    log.add(lines);
+    // 处理多行日志（兼容 \n 换行）
+    final lines = message
+        .replaceAll('\r\n', '\n')  // 统一换行符
+        .split('\n')               // 分割为独立行
+        .where((line) => line.isNotEmpty) // 过滤空行
+        .toList();
 
+    // 批量更新日志列表（单次响应式更新）
+    log.assignAll([...log, ...lines]);
+
+    // 日志截断优化（保持高性能）
     if (log.length > 2000) {
-      // log.removeRange(0, log.length - 2000);
-      log.removeRange(0, 1500);
+      log.assignAll(log.skip(log.length - 2000).toList());
     }
 
-    if (autoScroll.value) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        scrollController.animateTo(
-          scrollController.position.maxScrollExtent,
-          duration: const Duration(milliseconds: 100),
-          curve: Curves.easeOut,
-        );
-      });
+    // 立即触发滚动到底部
+    _scheduleAutoScroll();
+  }
+
+// 新增滚动控制方法
+  void _scheduleAutoScroll() {
+    if (autoScroll.value &&
+        scrollController.hasClients &&
+        !scrollController.position.outOfRange) {
+      // 零延迟硬跳转
+      scrollController.jumpTo(scrollController.position.maxScrollExtent);
     }
+  }
+
+// 在控制器销毁时增加保护
+  @override
+  void onClose() {
+    scrollController.dispose(); // 必须释放控制器
+    super.onClose();
   }
 
   void clearLog() {

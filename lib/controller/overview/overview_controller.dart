@@ -170,19 +170,17 @@ class OverviewController extends GetxController {
       log.assignAll(log.skip(log.length - 500).toList());
     }
 
-    // 立即触发滚动到底部
-    _scheduleAutoScroll();
-  }
-
-// 新增滚动控制方法
-  void _scheduleAutoScroll() {
-    if (autoScroll.value &&
-        scrollController.hasClients &&
-        !scrollController.position.outOfRange) {
-      // 零延迟硬跳转
-      scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    if (autoScroll.value) {  // 1. 检查是否启用自动滚动
+      WidgetsBinding.instance.addPostFrameCallback((_) {  // 2. 等待下一帧绘制完成
+        scrollController.animateTo(  // 3. 执行滚动动画
+          scrollController.position.maxScrollExtent,  // 4. 滚动目标位置
+          duration: const Duration(milliseconds: 1),  // 5. 动画持续时间
+          curve: Curves.easeOut,  // 6. 动画曲线
+        );
+      });
     }
   }
+
 
 // 在控制器销毁时增加保护
   @override

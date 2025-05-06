@@ -166,7 +166,8 @@ class OverviewController extends GetxController {
 
     // 日志截断优化（保持高性能）
     if (log.length > 2000) {
-      log.assignAll(log.skip(log.length - 2000).toList());
+      // log.assignAll(log.skip(log.length - 2000).toList());
+      log.assignAll(log.skip(log.length - 500).toList());
     }
 
     // 立即触发滚动到底部

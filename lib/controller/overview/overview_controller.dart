@@ -27,7 +27,14 @@ class OverviewController extends GetxController {
   double? savedScrollPosition; // 保存滚动位置
 
   void saveScrollPosition() {
-    savedScrollPosition = scrollController.position.pixels;
+    // 添加安全校验
+    if (scrollController.hasClients) {
+      savedScrollPosition = scrollController.position.pixels;
+      debugPrint('Saved scroll position: $savedScrollPosition');
+    } else {
+      debugPrint(
+          'Warning: Attempted to save position to unattached controller');
+    }
   }
 
   void restoreScrollPosition() {

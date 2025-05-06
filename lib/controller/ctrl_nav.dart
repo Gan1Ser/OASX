@@ -94,6 +94,9 @@ class NavCtrl extends GetxController {
   }
 
   Future<void> switchScript(int val) async {
+    print('切换菜单');
+    print(selectedScript.value);
+    print(val);
     if (val == selectedIndex.value) {
       return;
     }
@@ -119,6 +122,9 @@ class NavCtrl extends GetxController {
     selectedIndex.value = val;
     // ignore: invalid_use_of_protected_member
     selectedScript.value = scriptName.value[val];
+
+    // 3. 等待一帧确保新视图完成布局
+    await Future.delayed(Duration.zero);
 
     // 注册控制器的
     if (!Get.isRegistered<OverviewController>(tag: selectedScript.value) &&

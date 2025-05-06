@@ -152,23 +152,14 @@ class OverviewController extends GetxController {
   // }
 
 
-// 修改后的 addLog 方法（OverviewController 中）
-  void addLog(String message) {
-    // 处理多行日志（兼容 \n 换行）
-    final lines = message
-        .replaceAll('\r\n', '\n')  // 统一换行符
-        .split('\n')               // 分割为独立行
-        .where((line) => line.isNotEmpty) // 过滤空行
-        .toList();
+    void addLog(String message) {
+      // 直接添加单行日志（假设message已经是一行）
+      log.add(message);
 
-    // 批量更新日志列表（单次响应式更新）
-    log.assignAll([...log, ...lines]);
-
-    // 日志截断优化（保持高性能）
-    if (log.length > 2000) {
-      // log.assignAll(log.skip(log.length - 2000).toList());
-      log.assignAll(log.skip(log.length - 500).toList());
-    }
+      // 更高效的日志截断方式
+      if (log.length > 2000) {
+        log.removeRange(0, log.length - 500);
+      }
 
     if (autoScroll.value) {  // 1. 检查是否启用自动滚动
       WidgetsBinding.instance.addPostFrameCallback((_) {  // 2. 等待下一帧绘制完成

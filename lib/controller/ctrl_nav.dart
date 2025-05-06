@@ -97,6 +97,15 @@ class NavCtrl extends GetxController {
     if (val == selectedIndex.value) {
       return;
     }
+
+    // 1. 获取当前控制器（如果存在）
+    if (Get.isRegistered<OverviewController>(tag: selectedScript.value)) {
+      final currentController = Get.find<OverviewController>(
+        tag: selectedScript.value,
+      );
+      currentController.saveScrollPosition();
+    }
+
     // 切换二级菜单的
     if (val == 0) {
       selectedMenu.value = 'Home';
@@ -119,6 +128,14 @@ class NavCtrl extends GetxController {
           permanent: true,
           OverviewController(name: selectedScript.value));
     }
+
+    // 4. 获取新实例的控制器
+    final OverviewController newController = Get.find<OverviewController>(
+      tag: selectedScript.value,
+    );
+
+    // 5. 恢复新实例的滚动位置
+    newController.restoreScrollPosition();
   }
 
   // 获取能够有内容的二级菜单

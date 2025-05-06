@@ -24,22 +24,27 @@ class OverviewController extends GetxController {
   final scrollController = ScrollController();
   final autoScroll = true.obs;
 
+  double? savedScrollPosition; // 保存滚动位置
 
+  void saveScrollPosition() {
+    savedScrollPosition = scrollController.position.pixels;
+  }
+
+  void restoreScrollPosition() {
+    if (savedScrollPosition != null) {
+      // 确保在视图完成布局后执行
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (scrollController.hasClients) { // 检查是否已附加
+          scrollController.jumpTo(savedScrollPosition!);
+        }
+      });
+    }
+  }
   OverviewController({required this.name});
 
   @override
   void onInit() {
-    // testTimer = Timer.periodic(
-    //   const Duration(seconds: 1),
-    //   (timer) => {
-    //     log.value += 'INFO     13:35:28.463 │ No available devices\n',
-    //     count += 1,
-    //     if (count >= 20)
-    //       {
-    //         testTimer?.cancel(),
-    //       }
-    //   },
-    // );
+    print("创建控制器: $name");
     super.onInit();
   }
 

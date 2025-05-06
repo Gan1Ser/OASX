@@ -25,6 +25,20 @@ class Overview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    // 获取当前选中的脚本名称（从导航控制器）
+    final NavCtrl navCtrl = Get.find<NavCtrl>();
+    final String name = navCtrl.selectedScript.value;
+
+    // 动态注册控制器（如果不存在）
+    if (!Get.isRegistered<OverviewController>(tag: name)) {
+      Get.create<OverviewController>(
+            () => OverviewController(name: name),
+        tag: name,
+        permanent: true, // 关键：保持实例长期存活
+      );
+    }
+
     // return const Text("xxx");
     if (context.mediaQuery.orientation == Orientation.portrait) {
       // 竖方向
@@ -205,8 +219,8 @@ class Overview extends StatelessWidget {
     return GetX<OverviewController>(
       tag: navCtroler.selectedScript.value,
       builder: (OverviewController controller) {
-        OverviewController controller = Get.find<OverviewController>(
-            tag: navCtroler.selectedScript.value);
+        OverviewController controller = Get.find<OverviewController>(tag: navCtroler.selectedScript.value);
+        // print('Building log for ${controller.name} with scroll: ${controller.scrollController.hashCode}');
         return Container(
             margin: const EdgeInsets.fromLTRB(0, 0, 10, 10),
             decoration: BoxDecoration(

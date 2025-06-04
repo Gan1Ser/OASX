@@ -193,8 +193,8 @@ class Messages extends Translations {
         I18n.meta_demon: '超鬼王',
         I18n.demon_retreat: '首领退治',
         I18n.nian_true: '现世年兽',
-        I18n.abyss_trials: '狭间幻境',
-        I18n.dye_trials: '灵染试炼',
+        I18n.memory_scrolls: '绘卷捐赠',
+        I18n.activity_common: '活动通用',
         I18n.back_up: '日志备份',
         I18n.other: '其他',
       };

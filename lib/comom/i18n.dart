@@ -168,14 +168,14 @@ class Messages extends Translations {
         I18n.delegation: '式神委派',
         I18n.wanted_quests: '悬赏封印',
         I18n.tako: '石距',
-        I18n.liver_emperor_exclusive: '肝帝专属',
+        I18n.liver_emperor_exclusive: '绘卷相关',
         I18n.guild: '阴阳寮',
         I18n.weekly_task: '每周任务',
         I18n.activity_task: '限时活动',
         I18n.tools: '工具',
         I18n.bondling_fairyland: '契灵之境',
         I18n.evo_zone: '觉醒副本',
-        I18n.goryou_realm: '御灵之境',
+        I18n.goryou_realm: '御灵',
         I18n.exploration: '探索',
         I18n.kekkaiUtilize: '结界蹭卡',
         I18n.kekkaiActivation: '结界挂卡',
@@ -669,7 +669,7 @@ mode_3策略是刷到五个契灵后开始结契，选择高级、中级盘来�
         'kirin_type_help': '',
       };
   Map<String, String> get _cn_goryou_config => {
-        'goryou_config': '御灵之境',
+        'goryou_config': '御灵',
         'goryou_class': '挑战类型',
         'goryou_class_help': '',
       };

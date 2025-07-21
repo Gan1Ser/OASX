@@ -114,8 +114,12 @@ class ServerController extends GetxController {
     // runShell('(type env:path) -split ; ').then((value) => null);
     runShell('python -m deploy.installer').then((value) => null);
     runShell('echo Start OAS').then((value) => null);
-    runShell('taskkill /f /t /im pythonw.exe').then((value) => null);
-    runShell(".\\toolkit\\pythonw.exe  server.py").then((value) => null);
+    runShell('taskkill /f /t /im python.exe').then((value) => null);
+    // runShell(".\\toolkit\\pythonw.exe  server.py").then((value) => null);
+    shell!.run(r'''
+powershell.exe -Command "Start-Process .\toolkit\python.exe -ArgumentList 'server.py' -WindowStyle Hidden"
+''');
+
   }
 
   void readDeploy() {

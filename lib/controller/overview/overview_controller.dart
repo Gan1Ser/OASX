@@ -9,7 +9,7 @@ enum ScriptState {
 
 class OverviewController extends GetxController {
   WebSocketChannel? channel;
-  int wsConnetCount = 0;
+  int wsConnectCount = 0; // 原有重连计数器（注意拼写修正为 Connect）
 
   String name;
   var scriptState = ScriptState.updating.obs;
@@ -25,6 +25,8 @@ class OverviewController extends GetxController {
   final autoScroll = true.obs;
 
   double? savedScrollPosition; // 保存滚动位置
+  bool _isConnecting = false;
+  bool _isConnected = false;
 
   void saveScrollPosition() {
     // 添加安全校验
@@ -57,7 +59,7 @@ class OverviewController extends GetxController {
 
   @override
   Future<void> onReady() async {
-    await wsConnet();
+    await wsConnect();
     super.onReady();
   }
 
@@ -72,23 +74,44 @@ class OverviewController extends GetxController {
     }
   }
 
-  Future<void> wsConnet() async {
+  Future<void> wsConnect() async {
+    if (_isConnecting || _isConnected) {
+      return;
+    }
+
+    _isConnecting = true;
+    _isConnected = false; // 明确设置为未连接状态
+
     try {
       String address = 'ws://${ApiClient().address}/ws/$name';
-      if (address.contains('http://')) {
-        address = address.replaceAll('http://', '');
+      if (address.contains('http://') || address.contains('https://')) {
+        address = address.replaceAll('http://', '').replaceAll('https://', '');
       }
-      printInfo(info: address);
+      print("尝试连接: $address");
+
+      // 创建WebSocket通道
       channel = WebSocketChannel.connect(Uri.parse(address));
-    } on SocketException {
-      printInfo(
-          info:
-          'Unhandled Exception: SocketException: Failed host lookup: http (OS Error: 不知道这样的主机。');
-    } on Exception catch (e) {
-      printError(info: e.toString());
+      // 等待连接就绪
+      await channel!.ready;
+
+      // 连接成功后的处理
+      _isConnected = true;
+      _isConnecting = false;
+      wsConnectCount = 0; // 重置重连计数器
+      print("WebSocket连接成功");
+
+      // 确保通道有效
+      if (channel != null) {
+        await channel!.ready;
+        channel!.stream.listen(wsListen, onDone: wsReconnet);
+      }
+    }catch (e) {
+      print("连接异常: $e");
+      _isConnecting = false;
+      _isConnected = false;
+      wsReconnet();
     }
-    await channel!.ready;
-    channel!.stream.listen(wsListen, onDone: wsReconnet);
+
   }
 
   void wsListen(dynamic message) {
@@ -132,15 +155,29 @@ class OverviewController extends GetxController {
   }
 
   void wsReconnet() {
-    wsConnetCount += 1;
-    if (wsConnetCount > 10) {
-      printError(info: "WebSocket reconnect failed");
-      printError(info: "WebSocket is closed");
-      printError(info: 'WebSocket reconnect is more than 10 times');
+    // 首先检查是否已经正在重连或已连接
+    if (_isConnecting || _isConnected) {
       return;
     }
-    printInfo(info: "Socket is closed");
-    wsConnet();
+    wsConnectCount += 1;
+    // if (wsConnectCount > 10) {
+    //   printError(info: "WebSocket reconnect failed");
+    //   printError(info: "WebSocket is closed");
+    //   printError(info: 'WebSocket reconnect is more than 10 times');
+    //   wsConnectCount = 0; // 重置计数器
+    //   return;
+    // }
+    print("Socket is closed, $wsConnectCount 次重连");
+    // 设置连接状态，防止并发重连
+    _isConnecting = true;
+
+    // 添加延迟重连，避免频繁重连导致控制器不断重建
+    Future.delayed(const Duration(milliseconds: 1000), () {
+      // 在实际重连前再次检查状态
+      if (!_isConnected) {
+        wsConnect();
+      }
+    });
   }
 
   // void addLog(String message) {
@@ -176,6 +213,9 @@ class OverviewController extends GetxController {
 // 在控制器销毁时增加保护
   @override
   void onClose() {
+    _isConnected = false;
+    _isConnecting = false;
+    channel?.sink.close(); // 关闭WebSocket连接
     scrollController.dispose(); // 必须释放控制器
     super.onClose();
   }

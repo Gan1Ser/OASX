@@ -32,13 +32,13 @@ class Overview extends StatelessWidget {
 
     // 动态注册控制器（如果不存在）
     if (!Get.isRegistered<OverviewController>(tag: name)) {
-      Get.create<OverviewController>(
-            () => OverviewController(name: name),
+      print("动态注册控制器：${name}");
+      Get.put<OverviewController>(
+        OverviewController(name: name),
         tag: name,
         permanent: true, // 关键：保持实例长期存活
       );
     }
-
     // return const Text("xxx");
     if (context.mediaQuery.orientation == Orientation.portrait) {
       // 竖方向

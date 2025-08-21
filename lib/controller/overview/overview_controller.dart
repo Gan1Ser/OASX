@@ -200,11 +200,13 @@ class OverviewController extends GetxController {
 
     if (autoScroll.value) {  // 1. 检查是否启用自动滚动
       WidgetsBinding.instance.addPostFrameCallback((_) {  // 2. 等待下一帧绘制完成
-        scrollController.animateTo(  // 3. 执行滚动动画
-          scrollController.position.maxScrollExtent,  // 4. 滚动目标位置
-          duration: const Duration(milliseconds: 1),  // 5. 动画持续时间
-          curve: Curves.easeOut,  // 6. 动画曲线
-        );
+        if (scrollController.hasClients) {
+          scrollController.animateTo( // 3. 执行滚动动画
+            scrollController.position.maxScrollExtent, // 4. 滚动目标位置
+            duration: const Duration(milliseconds: 1), // 5. 动画持续时间
+            curve: Curves.easeOut, // 6. 动画曲线
+          );
+        }
       });
     }
   }

@@ -198,17 +198,27 @@ class Overview extends StatelessWidget {
         final controller = Get.find<OverviewController>(tag: navCtrl.selectedScript.value);
         return Row(
           children: [
-            Switch(
-              value: controller.autoScroll.value,
-              onChanged: (value) => controller.autoScroll.value = value,
+            // 自动滚动开关 - 显示不同图标表示开启/关闭状态
+            IconButton(
+              icon: Icon(
+                controller.autoScroll.value 
+                  ? Icons.autorenew  // 开启状态 - 自动刷新图标
+                  : Icons.autorenew_outlined,  // 关闭状态 - 轮廓图标
+                color: controller.autoScroll.value 
+                  ? Colors.green  // 开启时为绿色
+                  : null,  // 关闭时使用默认颜色
+              ),
+              onPressed: () => controller.autoScroll.value = !controller.autoScroll.value,
             ),
-            TextButton(
+            // 复制日志按钮
+            IconButton(
+              icon: const Icon(Icons.copy),
               onPressed: () => controller.copyLog(),
-              child: Text('复制日志'),
             ),
-            TextButton(
+            // 清空日志按钮
+            IconButton(
+              icon: const Icon(Icons.clear),
               onPressed: () => controller.clearLog(),
-              child: Text(I18n.clear_log.tr),
             ),
           ],
         );

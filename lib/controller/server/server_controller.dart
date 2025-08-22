@@ -118,11 +118,7 @@ class ServerController extends GetxController {
     runShell('taskkill /f /t /im pythonw.exe').then((value) => null);
     runShell('echo ====================  Taskkill OAS Complete ==================== ').then((value) => null);
     runShell('.\\toolkit\\python.exe -m deploy.installer').then((value) => null);
-    runShell('echo ====================  Start OAS ==================== ').then((value) => null);
-    // runShell(".\\toolkit\\python.exe  server.py").then((value) => null);
-    // runShell(".\\toolkit\\pythonw.exe  server.py").then((value) => null);
-    runShell('powershell.exe -Command "Start-Process .\\toolkit\\python.exe -ArgumentList \'server.py\' -WindowStyle Hidden"').then((value) => null);
-    runShell('echo ====================  Start OAS Complete ==================== ').then((value) => null);
+    runShell(".\\toolkit\\pythonw.exe  server.py").then((value) => null);
   }
 
   void readDeploy() {

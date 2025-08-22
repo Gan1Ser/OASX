@@ -208,7 +208,17 @@ class Overview extends StatelessWidget {
                   ? Colors.green  // 开启时为绿色
                   : null,  // 关闭时使用默认颜色
               ),
-              onPressed: () => controller.autoScroll.value = !controller.autoScroll.value,
+              onPressed: () {
+                controller.autoScroll.value = !controller.autoScroll.value;
+                // 显示提示信息
+                Get.snackbar(
+                  I18n.log.tr,
+                  controller.autoScroll.value 
+                    ? '自动滚动已开启' 
+                    : '自动滚动已关闭',
+                  snackPosition: SnackPosition.TOP,
+                );
+              },
             ),
             // 复制日志按钮
             IconButton(
@@ -218,7 +228,15 @@ class Overview extends StatelessWidget {
             // 清空日志按钮
             IconButton(
               icon: const Icon(Icons.clear),
-              onPressed: () => controller.clearLog(),
+              onPressed: () {
+                controller.clearLog();
+                // 显示提示信息
+                Get.snackbar(
+                  I18n.log.tr,
+                  '日志已清空',
+                  snackPosition: SnackPosition.TOP,
+                );
+              },
             ),
           ],
         );

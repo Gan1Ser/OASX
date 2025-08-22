@@ -127,31 +127,72 @@ class OverviewController extends GetxController {
     }
     Map<String, dynamic> data = json.decode(message);
     if (data.containsKey('state')) {
-      scriptState.value = switch (data['state']) {
+      ScriptState newState = switch (data['state']) {
         0 => ScriptState.inactive,
         1 => ScriptState.running,
         2 => ScriptState.warning,
         3 => ScriptState.updating,
         _ => ScriptState.inactive,
       };
+      // 添加状态去重判断，避免不必要的UI更新
+      if (scriptState.value != newState) {
+        scriptState.value = newState;
+      }
     } else if (data.containsKey('schedule')) {
       Map run = data['schedule']['running'];
       List<dynamic> pending = data['schedule']['pending'];
-
       List<dynamic> waiting = data['schedule']['waiting'];
 
-      if (run.isNotEmpty) {
-        running.value = TaskItemModel(run['name'], run['next_run']);
-      } else {
-        running.value = const TaskItemModel('', '');
+      // 对running任务进行去重判断
+      TaskItemModel newRunning = run.isNotEmpty 
+          ? TaskItemModel(run['name'], run['next_run'])
+          : const TaskItemModel('', '');
+      
+      if (running.value.taskName != newRunning.taskName || 
+          running.value.nextRun != newRunning.nextRun) {
+        running.value = newRunning;
       }
-      pendings.value = [];
+
+      // 对pendings列表进行去重判断
+      List<TaskItemModel> newPendings = [];
       for (var element in pending) {
-        pendings.add(TaskItemModel(element['name'], element['next_run']));
+        newPendings.add(TaskItemModel(element['name'], element['next_run']));
       }
-      waitings.value = [];
+      
+      bool pendingsChanged = pendings.length != newPendings.length;
+      if (!pendingsChanged) {
+        for (int i = 0; i < pendings.length; i++) {
+          if (pendings[i].taskName != newPendings[i].taskName ||
+              pendings[i].nextRun != newPendings[i].nextRun) {
+            pendingsChanged = true;
+            break;
+          }
+        }
+      }
+      
+      if (pendingsChanged) {
+        pendings.value = newPendings;
+      }
+
+      // 对waitings列表进行去重判断
+      List<TaskItemModel> newWaitings = [];
       for (var element in waiting) {
-        waitings.add(TaskItemModel(element['name'], element['next_run']));
+        newWaitings.add(TaskItemModel(element['name'], element['next_run']));
+      }
+      
+      bool waitingsChanged = waitings.length != newWaitings.length;
+      if (!waitingsChanged) {
+        for (int i = 0; i < waitings.length; i++) {
+          if (waitings[i].taskName != newWaitings[i].taskName ||
+              waitings[i].nextRun != newWaitings[i].nextRun) {
+            waitingsChanged = true;
+            break;
+          }
+        }
+      }
+      
+      if (waitingsChanged) {
+        waitings.value = newWaitings;
       }
     }
   }

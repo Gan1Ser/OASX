@@ -85,10 +85,7 @@ class Overview extends StatelessWidget {
             ScriptState.updating => const Text("Updating"),
           };
           Widget stateSpinKit = switch (controller.scriptState.value) {
-            ScriptState.running => const SpinKitChasingDots(
-                color: Colors.green,
-                size: 22,
-              ),
+            ScriptState.running =>const _RunningIndicator(),
             ScriptState.inactive =>
               const Icon(Icons.donut_large, size: 26, color: Colors.grey),
             ScriptState.warning =>
@@ -391,5 +388,18 @@ class Overview extends StatelessWidget {
     return context.mediaQuery.orientation == Orientation.portrait
         ? Get.textTheme.bodySmall!
         : Get.textTheme.titleSmall!;
+  }
+}
+class _RunningIndicator extends StatelessWidget {
+  const _RunningIndicator();
+
+  @override
+  Widget build(BuildContext context) {
+    return const RepaintBoundary(
+      child: SpinKitChasingDots(
+        color: Colors.green,
+        size: 22,
+      ),
+    );
   }
 }

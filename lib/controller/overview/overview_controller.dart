@@ -54,6 +54,8 @@ class OverviewController extends GetxController {
   @override
   void onInit() {
     print("创建控制器: $name");
+    // 添加滚动监听器
+    scrollController.addListener(_scrollListener);
     super.onInit();
   }
 
@@ -180,6 +182,24 @@ class OverviewController extends GetxController {
     });
   }
 
+  // 滚动监听器
+  void _scrollListener() {
+    if (scrollController.hasClients) {
+      // 检查是否滚动到底部
+      if (scrollController.position.pixels >= scrollController.position.maxScrollExtent - 10) {
+        // 如果接近底部，启用自动滚动
+        if (!autoScroll.value) {
+          autoScroll.value = true;
+        }
+      } else {
+        // 如果不在底部，禁用自动滚动
+        if (autoScroll.value) {
+          autoScroll.value = false;
+        }
+      }
+    }
+  }
+
   // void addLog(String message) {
   //   log.value += message;
   // }
@@ -218,6 +238,7 @@ class OverviewController extends GetxController {
     _isConnected = false;
     _isConnecting = false;
     channel?.sink.close(); // 关闭WebSocket连接
+    scrollController.removeListener(_scrollListener); // 移除滚动监听器
     scrollController.dispose(); // 必须释放控制器
     super.onClose();
   }

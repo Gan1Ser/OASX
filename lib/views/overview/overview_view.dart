@@ -225,9 +225,9 @@ class Overview extends StatelessWidget {
               icon: const Icon(Icons.copy),
               onPressed: () => controller.copyLog(),
             ),
-            // 清空日志按钮
+            // 清空日志按钮 - 使用垃圾桶图标
             IconButton(
-              icon: const Icon(Icons.clear),
+              icon: const Icon(Icons.delete),
               onPressed: () {
                 controller.clearLog();
                 // 显示提示信息

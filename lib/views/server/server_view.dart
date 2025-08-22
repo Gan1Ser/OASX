@@ -170,10 +170,22 @@ class ServerView extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         title: Text(I18n.setup_log.tr, style: Get.textTheme.titleMedium),
         children: [
-          SingleChildScrollView(
-              child: GetX<ServerController>(builder: (controller) {
-            return SelectableText(controller.log.value);
-          })).constrained(height: maxHeight),
+          GetX<ServerController>(builder: (controller) {
+            // 使用 GlobalKey 获取 ScrollableState
+            final scrollController = ScrollController();
+            
+            // 在微任务队列中滚动到底部，确保每次更新日志时都能滚动到最新内容
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (scrollController.hasClients) {
+                scrollController.jumpTo(scrollController.position.maxScrollExtent);
+              }
+            });
+            
+            return SingleChildScrollView(
+              controller: scrollController,
+              child: SelectableText(controller.log.value),
+            ).constrained(height: maxHeight);
+          }),
         ]);
   }
 

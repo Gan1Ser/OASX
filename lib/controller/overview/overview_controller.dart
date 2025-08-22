@@ -231,6 +231,25 @@ class OverviewController extends GetxController {
     }
   }
 
+  // 复制日志到剪贴板
+  void copyLog() {
+    if (log.isNotEmpty) {
+      // 保持日志原有的格式，不添加额外的换行
+      final logText = log.join('');
+      Clipboard.setData(ClipboardData(text: logText));
+      Get.snackbar(
+        I18n.log.tr,
+        '日志已复制到剪贴板',
+        snackPosition: SnackPosition.TOP,
+      );
+    } else {
+      Get.snackbar(
+        I18n.log.tr,
+        '日志为空',
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+  }
 
 // 在控制器销毁时增加保护
   @override

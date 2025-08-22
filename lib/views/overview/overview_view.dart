@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter/services.dart'; // 添加剪贴板支持
 
 import 'package:styled_widget/styled_widget.dart';
 import 'package:easy_rich_text/easy_rich_text.dart';
@@ -131,7 +132,7 @@ class Overview extends StatelessWidget {
             Text(I18n.running.tr,
                 textAlign: TextAlign.left, style: Get.textTheme.titleMedium),
             const Divider(),
-            TaskItemView.fromModel(controller.running.value)
+            TaskItemView.fromModel(controller.running.value),
           ]
               .toColumn(crossAxisAlignment: CrossAxisAlignment.start)
               .padding(top: 8, bottom: 0, left: 8, right: 8)
@@ -200,6 +201,10 @@ class Overview extends StatelessWidget {
             Switch(
               value: controller.autoScroll.value,
               onChanged: (value) => controller.autoScroll.value = value,
+            ),
+            TextButton(
+              onPressed: () => controller.copyLog(),
+              child: Text('复制日志'),
             ),
             TextButton(
               onPressed: () => controller.clearLog(),

@@ -13,3 +13,18 @@ flutter build windows
 flutter run -d android
 
 flutter run -d windows
+
+
+git action 配置 Secrets
+
+RELEASE_TOKEN： github获取token
+OASX_RELEASE： release
+WINDOWS_PATH_VALUES： release
+WINDOWS_PATH_KEY： assets/release.txt
+
+KEYSTORE_PASWORD： oasx-password
+KEY_PASSWORD： oasx-password
+KEY_ALIAS： upload
+WINDOWS_PATH_KEY： ./assets/release.txt
+WINDOWS_PATH_VALUES： release
+RELEASE_TOKEN： 自己github的token了

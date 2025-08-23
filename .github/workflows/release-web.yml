@@ -1,7 +1,10 @@
 on:
   push:
-    branches: 
-      - master
+    tags:
+      - 'v*'
+#    branches:
+#      - owner
+  workflow_dispatch:
 name: Build-Release[Web]
 
 

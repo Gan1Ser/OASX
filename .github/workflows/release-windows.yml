@@ -1,11 +1,11 @@
 on:
   push:
-    tags: 
-        - 'v*'
-    # branches: 
-    #   - master
+    tags:
+      - 'v*'
+#    branches:
+#      - owner
+  workflow_dispatch:
 name: Build-Release[Windows]
-
 
 jobs:
     build_and_package:

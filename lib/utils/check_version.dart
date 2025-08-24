@@ -33,15 +33,26 @@ bool compareVersion(String current, String last) {
   }
   List<String> currentNumbers = current.split('.');
   List<String> lastNumbers = last.split('.');
-  if (int.parse(currentNumbers[0]) < int.parse(lastNumbers[0])) {
+
+  // 比较主版本号
+  if (int.parse(lastNumbers[0]) > int.parse(currentNumbers[0])) {
+    return true;
+  } else if (int.parse(lastNumbers[0]) < int.parse(currentNumbers[0])) {
+    return false;
+  }
+
+  // 比较次版本号
+  if (int.parse(lastNumbers[1]) > int.parse(currentNumbers[1])) {
+    return true;
+  } else if (int.parse(lastNumbers[1]) < int.parse(currentNumbers[1])) {
+    return false;
+  }
+
+  // 比较修订号
+  if (int.parse(lastNumbers[2]) > int.parse(currentNumbers[2])) {
     return true;
   }
-  if (int.parse(currentNumbers[1]) < int.parse(lastNumbers[1])) {
-    return true;
-  }
-  if (int.parse(currentNumbers[2]) < int.parse(lastNumbers[2])) {
-    return true;
-  }
+
   return false;
 }
 

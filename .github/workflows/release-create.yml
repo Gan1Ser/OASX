@@ -36,19 +36,37 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.10'
-      - run: python ./script/extract_changelog.py
+      - run: |
+          pip install requests
+          python ./script/extract_changelog.py
+          
 
+      # 获取最新tag
+      - name: Get latest tag
+        id: latest_tag
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const { data: tags } = await github.repos.listTags({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+            });
+            // 获取最新的tag（按时间排序，第一个为最新）
+            const latestTagName = tags[0].name;
+            const latestTagRef = 'refs/tags/' + latestTagName;
+            console.log('Latest tag name: ' + latestTagName);
+            console.log('Latest tag ref: ' + latestTagRef);
+            return { name: latestTagName, ref: latestTagRef };
 
       # 创建发布  
       - name: Create Release
         id: create_release
-        if: startsWith(github.event.ref, 'refs/tags/') && steps.check_release.outputs.result == 'false'
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          tag_name: ${{ fromJson(steps.latest_tag.outputs.result).name }}
+          release_name: Release ${{ fromJson(steps.latest_tag.outputs.result).name }}
           body_path: ./CHANGELATEST.md
           draft: false
           prerelease: false

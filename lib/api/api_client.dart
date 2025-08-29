@@ -106,9 +106,9 @@ class ApiClient {
     appResponse.when(success: (data) {
       printInfo(info: data.toString());
       if (data is bool && data == true) {
-        Get.snackbar(I18n.notify_test_success.tr, '');
+        Get.snackbar(I18n.notify_test_success.tr, '', duration: const Duration(seconds: 1));
       } else {
-        Get.snackbar(I18n.notify_test_failed.tr, data.toString());
+        Get.snackbar(I18n.notify_test_failed.tr, data.toString(), duration: const Duration(seconds: 1));
       }
     }, failure: (String msg, int code) {
       printError(info: '${I18n.network_error_code}: $msg | $code'.tr);
@@ -382,15 +382,15 @@ class ApiClient {
 
 // ---------------------------------   Snackbar --------------------------------
   void showDialog(String title, String content) {
-    Get.snackbar(title, content);
+    Get.snackbar(title, content, duration: const Duration(seconds: 1),);
   }
 
   void showNetworkTimeout() {
-    Get.snackbar(I18n.network_error.tr, I18n.network_connect_timeout.tr);
+    Get.snackbar(I18n.network_error.tr, I18n.network_connect_timeout.tr, duration: const Duration(seconds: 1),);
   }
 
   void showNetworkErrorCode(String msg, int code) {
     Get.snackbar(I18n.network_error.tr,
-        '${I18n.network_error_code.tr}: $msg | $code'.tr);
+        '${I18n.network_error_code.tr}: $msg | $code'.tr, duration: const Duration(seconds: 1),);
   }
 }

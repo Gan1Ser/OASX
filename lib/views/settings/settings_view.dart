@@ -60,10 +60,10 @@ class SettingsView extends StatelessWidget {
                       // bool result = false;
                       ApiClient().killServer().then((value) {
                         if (value) {
-                          Get.snackbar(I18n.kill_server_success.tr, '');
+                          Get.snackbar(I18n.kill_server_success.tr, '', duration: const Duration(seconds: 1),);
                           Get.offAllNamed('/login');
                         } else {
-                          Get.snackbar(I18n.kill_server_failure.tr, '');
+                          Get.snackbar(I18n.kill_server_failure.tr, '', duration: const Duration(seconds: 1),);
                         }
                       })
                     },

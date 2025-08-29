@@ -282,12 +282,14 @@ class OverviewController extends GetxController {
         I18n.log.tr,
         '日志已复制到剪贴板',
         snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 1),
       );
     } else {
       Get.snackbar(
         I18n.log.tr,
         '日志为空',
         snackPosition: SnackPosition.TOP,
+        duration: const Duration(seconds: 1),
       );
     }
   }

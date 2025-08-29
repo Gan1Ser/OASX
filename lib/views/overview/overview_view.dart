@@ -214,6 +214,7 @@ class Overview extends StatelessWidget {
                     ? '自动滚动已开启' 
                     : '自动滚动已关闭',
                   snackPosition: SnackPosition.TOP,
+                  duration: const Duration(seconds: 1),
                 );
               },
             ),
@@ -232,6 +233,7 @@ class Overview extends StatelessWidget {
                   I18n.log.tr,
                   '日志已清空',
                   snackPosition: SnackPosition.TOP,
+                  duration: const Duration(seconds: 1),
                 );
               },
             ),

@@ -36,7 +36,7 @@ class LoginController extends GetxController {
       // Get.snackbar('Success', 'Successfully connected to OAS server');
       Get.offAllNamed('/main');
     } else {
-      Get.snackbar('Error', 'Failed to connect to OAS server');
+      Get.snackbar('Error', 'Failed to connect to OAS server', duration: const Duration(seconds: 1));
     }
   }
 }

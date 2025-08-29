@@ -79,7 +79,7 @@ class ServerController extends GetxController {
     return true;
   }
 
-  String get pathGit => '${rootPathServer.value}\\toolkit\\Git\\mingw64\\bin"';
+  String get pathGit => '${rootPathServer.value}\\toolkit\\Git\\mingw64\\bin';
   String get pathPython => '${rootPathServer.value}\\toolkit';
   String get pathAdb =>
       '${rootPathServer.value}\\toolkit\\Lib\\site-packages\\adbutils\\binaries';
@@ -109,15 +109,11 @@ class ServerController extends GetxController {
   void run() {
     log.value = '';
     shell!.kill();
-    runShell('echo OAS working directory: ').then((value) => null);
-    runShell('pwd').then((value) => null);
-    // runShell('(type env:path) -split ; ').then((value) => null);
-    runShell('echo ====================  Taskkill OAS ==================== ').then((value) => null);
-    runShell('taskkill /f /t /im oas.exe').then((value) => null);
-    runShell('taskkill /f /t /im python.exe').then((value) => null);
-    runShell('taskkill /f /t /im pythonw.exe').then((value) => null);
-    runShell('echo ====================  Taskkill OAS Complete ==================== ').then((value) => null);
-    runShell('.\\toolkit\\python.exe -m deploy.installer').then((value) => null);
+    runShell('echo pathGit: $pathGit'); // 打印 pathGit 参数
+    runShell('echo pathPython: $pathPython'); // 打印 pathPython 参数
+    runShell('echo pathAdb: $pathAdb'); // 打印 pathAdb 参数
+    runShell('echo pathScripts: $pathScripts'); // 打印 pathScripts 参数
+    runShell('.\\toolkit\\python.exe -m deploy.killOAS').then((value) => null);
     runShell(".\\toolkit\\pythonw.exe  server.py").then((value) => null);
   }
 

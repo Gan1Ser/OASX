@@ -127,6 +127,8 @@ final Map<String, String> _cn_menu = {
   I18n.dye_trials: '灵染试炼',
   I18n.activity_common: '活动通用',
   I18n.auto_cake: '自动樱饼',
+  I18n.main_story: '主线剧情',
+  I18n.small_account: '账号切换',
   I18n.nian_true: '现世年兽',
 };
 
@@ -222,7 +224,7 @@ final Map<String, String> _cn_restart = {
   I18n.failure_interval_help: '',
   I18n.server_update: '强制设定服务执行时间',
   I18n.server_update_help:
-  '如果设定不是默认的 "09:00:00",该任务每次执行完毕后会强制设定下次运行时间为第二天的设定值',
+  '若间隔超1天则按固定时间加天数计算下次运行时间，否则（≤1天）根据固定时间是否为9点决定：是则当前时间加间隔，否则取明天该固定时间',
   I18n.harvest_enable_help: '这个一个部分是为了在登录游戏时，自动点击赠送的奖励，是必选项',
   I18n.enable_jade: '永久勾玉卡',
   I18n.enable_sign: '每日签到',

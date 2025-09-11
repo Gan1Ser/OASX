@@ -125,6 +125,8 @@ class I18n {
   static const String nian_true = 'NianTrue';
   static const String demon_retreat = 'DemonRetreat';
   static const String dye_trials = 'DyeTrials';
+  static const String small_account = 'SmallAccount';
+  static const String main_story = 'MainStory';
   static const String back_up = 'BackUp';
   static const String other = 'other';
 

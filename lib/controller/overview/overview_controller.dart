@@ -255,8 +255,8 @@ class OverviewController extends GetxController {
       log.add(message);
 
       // 更高效的日志截断方式
-      if (log.length > 300) {
-        log.removeRange(0, log.length - 100);
+      if (log.length > 2000) {
+        log.removeRange(0, log.length - 500);
       }
 
     if (autoScroll.value) {  // 1. 检查是否启用自动滚动

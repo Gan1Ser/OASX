@@ -101,7 +101,7 @@ class ArgumentModel {
         json['maximum'],
         json['defaultValue'],
         json['description'],
-        title: json['name'] as String,
+        title: json['headline'] != null && json['headline'].isNotEmpty ? json['headline'] as String : json['name'] as String,
         value: json['value'],
         type: json['type'] as String);
   }

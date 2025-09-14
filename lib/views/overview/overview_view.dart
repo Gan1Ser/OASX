@@ -271,7 +271,8 @@ class Overview extends StatelessWidget {
       }),
     ]
         .toRow(mainAxisAlignment: MainAxisAlignment.spaceBetween)
-        .paddingAll(8)
+        .constrained(height: 48)
+        .paddingOnly(left: 8, right: 8)
         .card(margin: const EdgeInsets.fromLTRB(0, 0, 10, 10));
   }
 
@@ -305,7 +306,7 @@ class Overview extends StatelessWidget {
               ),
             ) .paddingAll(5)
                 .constrained(width: double.infinity, height: double.infinity)
-                .card(margin: const EdgeInsets.fromLTRB(0, 0, 10, 10))
+                .card(margin: const EdgeInsets.fromLTRB(0, 0, 0, 0))
         );
       },
     );

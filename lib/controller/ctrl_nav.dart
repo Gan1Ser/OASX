@@ -101,7 +101,7 @@ class NavCtrl extends GetxController {
       return;
     }
 
-    // 1. 获取当前控制器（如果存在）
+    // 1. 获取当前控制器（如果存在）并保存滚动位置
     if (Get.isRegistered<OverviewController>(tag: selectedScript.value)) {
       final currentController = Get.find<OverviewController>(
         tag: selectedScript.value,
@@ -123,9 +123,6 @@ class NavCtrl extends GetxController {
     // ignore: invalid_use_of_protected_member
     selectedScript.value = scriptName.value[val];
 
-    // 3. 等待一帧确保新视图完成布局
-    await Future.delayed(Duration.zero);
-
     // 注册控制器的
     if (!Get.isRegistered<OverviewController>(tag: selectedScript.value) &&
         val != 0) {
@@ -134,14 +131,6 @@ class NavCtrl extends GetxController {
           permanent: true,
           OverviewController(name: selectedScript.value));
     }
-
-    // 4. 获取新实例的控制器
-    final OverviewController newController = Get.find<OverviewController>(
-      tag: selectedScript.value,
-    );
-
-    // 5. 恢复新实例的滚动位置
-    newController.restoreScrollPosition();
   }
 
   // 获取能够有内容的二级菜单
@@ -174,6 +163,16 @@ class NavCtrl extends GetxController {
     if (!useablemenus.contains(val)) {
       return;
     }
+    
+    // 在切换菜单前保存当前滚动位置
+    if (selectedMenu.value == 'Overview' && selectedScript.value != 'Home') {
+      // 保存当前Overview页面的滚动位置
+      if (Get.isRegistered<OverviewController>(tag: selectedScript.value)) {
+        final currentController = Get.find<OverviewController>(tag: selectedScript.value);
+        currentController.saveScrollPosition();
+      }
+    }
+
     selectedMenu.value = val;
 
     // args的切换

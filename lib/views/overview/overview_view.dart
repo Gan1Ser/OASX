@@ -40,6 +40,15 @@ class Overview extends StatelessWidget {
         permanent: true, // 关键：保持实例长期存活
       );
     }
+    
+    // 获取控制器实例并在下一帧恢复滚动位置
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (Get.isRegistered<OverviewController>(tag: name)) {
+        final controller = Get.find<OverviewController>(tag: name);
+        controller.restoreScrollPosition();
+      }
+    });
+    
     // return const Text("xxx");
     if (context.mediaQuery.orientation == Orientation.portrait) {
       // 竖方向

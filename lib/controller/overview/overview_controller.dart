@@ -24,6 +24,9 @@ class OverviewController extends GetxController {
   final scrollController = ScrollController();
   final autoScroll = true.obs;
 
+  // 使用静态Map存储滚动位置信息
+  static final Map<String, ScrollPositionInfo> _scrollPositionMap = {};
+  
   double? savedScrollPosition; // 保存滚动位置
   bool? savedScrollAtBottom; // 保存是否在底部的标志
   bool _isConnecting = false;
@@ -32,16 +35,24 @@ class OverviewController extends GetxController {
   void saveScrollPosition() {
     // 添加安全校验
     if (scrollController.hasClients) {
-      savedScrollPosition = scrollController.position.pixels;
-      savedScrollAtBottom = scrollController.position.pixels >= scrollController.position.maxScrollExtent - 10;
-      debugPrint('Saved scroll position: $savedScrollPosition, at bottom: $savedScrollAtBottom');
+      final position = scrollController.position.pixels;
+      final atBottom = position >= scrollController.position.maxScrollExtent - 10;
+      // 保存到静态Map中
+      _scrollPositionMap[name] = ScrollPositionInfo(position, atBottom);
+      debugPrint('Saved scroll position for $name: $position, at bottom: $atBottom');
     } else {
-      debugPrint(
-          'Warning: Attempted to save position to unattached controller');
+      debugPrint('Warning: Attempted to save position to unattached controller');
     }
   }
 
   void restoreScrollPosition() {
+    // 从静态Map中获取保存的位置信息
+    if (_scrollPositionMap.containsKey(name)) {
+      final positionInfo = _scrollPositionMap[name]!;
+      savedScrollPosition = positionInfo.position;
+      savedScrollAtBottom = positionInfo.atBottom;
+    }
+    
     if (savedScrollPosition != null) {
       // 确保在视图完成布局后执行
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -49,14 +60,17 @@ class OverviewController extends GetxController {
           // 如果之前在底部，则滚动到底部
           if (savedScrollAtBottom == true) {
             scrollController.jumpTo(scrollController.position.maxScrollExtent);
+            debugPrint('Restored scroll to bottom for $name');
           } else {
             // 否则恢复到之前的具体位置
             scrollController.jumpTo(savedScrollPosition!);
+            debugPrint('Restored scroll position for $name: $savedScrollPosition');
           }
         }
       });
     }
   }
+
   OverviewController({required this.name});
 
   @override
@@ -318,4 +332,11 @@ class OverviewController extends GetxController {
   }
 
 
+}
+
+class ScrollPositionInfo {
+  final double position;
+  final bool atBottom;
+  
+  ScrollPositionInfo(this.position, this.atBottom);
 }

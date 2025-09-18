@@ -121,6 +121,7 @@ class I18n {
   static const String meta_demon = 'MetaDemon';
   static const String memory_scrolls = 'MemoryScrolls';
   static const String activity_common = 'ActivityCommon';
+  static const String activity_common_2 = 'ActivityCommon2';
   static const String auto_cake = 'AutoCake';
   static const String nian_true = 'NianTrue';
   static const String demon_retreat = 'DemonRetreat';

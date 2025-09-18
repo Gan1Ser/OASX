@@ -126,6 +126,7 @@ final Map<String, String> _cn_menu = {
   I18n.demon_retreat: '首领退治',
   I18n.dye_trials: '灵染试炼',
   I18n.activity_common: '活动通用',
+  I18n.activity_common_2: '活动通用2',
   I18n.auto_cake: '自动樱饼',
   I18n.main_story: '主线剧情',
   I18n.small_account: '账号切换',

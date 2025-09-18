@@ -25,6 +25,7 @@ class OverviewController extends GetxController {
   final autoScroll = true.obs;
 
   double? savedScrollPosition; // 保存滚动位置
+  bool? savedScrollAtBottom; // 保存是否在底部的标志
   bool _isConnecting = false;
   bool _isConnected = false;
 
@@ -32,7 +33,8 @@ class OverviewController extends GetxController {
     // 添加安全校验
     if (scrollController.hasClients) {
       savedScrollPosition = scrollController.position.pixels;
-      debugPrint('Saved scroll position: $savedScrollPosition');
+      savedScrollAtBottom = scrollController.position.pixels >= scrollController.position.maxScrollExtent - 10;
+      debugPrint('Saved scroll position: $savedScrollPosition, at bottom: $savedScrollAtBottom');
     } else {
       debugPrint(
           'Warning: Attempted to save position to unattached controller');
@@ -44,7 +46,13 @@ class OverviewController extends GetxController {
       // 确保在视图完成布局后执行
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if (scrollController.hasClients) { // 检查是否已附加
-          scrollController.jumpTo(savedScrollPosition!);
+          // 如果之前在底部，则滚动到底部
+          if (savedScrollAtBottom == true) {
+            scrollController.jumpTo(scrollController.position.maxScrollExtent);
+          } else {
+            // 否则恢复到之前的具体位置
+            scrollController.jumpTo(savedScrollPosition!);
+          }
         }
       });
     }

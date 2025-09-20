@@ -225,6 +225,14 @@ class Overview extends StatelessWidget {
                 //   snackPosition: SnackPosition.TOP,
                 //   duration: const Duration(seconds: 1),
                 // );
+                // 如果开启了自动滚动，则滚动到底部
+                if (controller.autoScroll.value && controller.scrollController.hasClients) {
+                  controller.scrollController.animateTo(
+                    controller.scrollController.position.maxScrollExtent,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  );
+                }
               },
             ),
             // 复制日志按钮

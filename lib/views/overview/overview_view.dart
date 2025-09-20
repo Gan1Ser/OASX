@@ -217,20 +217,32 @@ class Overview extends StatelessWidget {
               onPressed: () {
                 controller.autoScroll.value = !controller.autoScroll.value;
                 // 显示提示信息
-                Get.snackbar(
-                  I18n.log.tr,
-                  controller.autoScroll.value 
-                    ? '自动滚动已开启' 
-                    : '自动滚动已关闭',
-                  snackPosition: SnackPosition.TOP,
-                  duration: const Duration(seconds: 1),
-                );
+                // Get.snackbar(
+                //   I18n.log.tr,
+                //   controller.autoScroll.value
+                //     ? '自动滚动已开启'
+                //     : '自动滚动已关闭',
+                //   snackPosition: SnackPosition.TOP,
+                //   duration: const Duration(seconds: 1),
+                // );
               },
             ),
             // 复制日志按钮
             IconButton(
               icon: const Icon(Icons.copy),
-              onPressed: () => controller.copyLog(),
+              onPressed: () {
+                if (controller.log.isNotEmpty) {
+                  // 保持日志原有的格式，不添加额外的换行
+                  final logText = controller.log.join('');
+                  Clipboard.setData(ClipboardData(text: logText));
+                  Get.snackbar(
+                    I18n.log.tr,
+                    '日志已复制到剪贴板',
+                    snackPosition: SnackPosition.TOP,
+                    duration: const Duration(seconds: 1),
+                  );
+                }
+              },
             ),
             // 清空日志按钮 - 使用垃圾桶图标
             IconButton(
@@ -238,12 +250,12 @@ class Overview extends StatelessWidget {
               onPressed: () {
                 controller.clearLog();
                 // 显示提示信息
-                Get.snackbar(
-                  I18n.log.tr,
-                  '日志已清空',
-                  snackPosition: SnackPosition.TOP,
-                  duration: const Duration(seconds: 1),
-                );
+                // Get.snackbar(
+                //   I18n.log.tr,
+                //   '日志已清空',
+                //   snackPosition: SnackPosition.TOP,
+                //   duration: const Duration(seconds: 1),
+                // );
               },
             ),
           ],

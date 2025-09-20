@@ -213,6 +213,7 @@ class Overview extends StatelessWidget {
                 color: controller.autoScroll.value 
                   ? Colors.green  // 开启时为绿色
                   : null,  // 关闭时使用默认颜色
+                size: 20,  // 设置图标大小为18
               ),
               onPressed: () {
                 controller.autoScroll.value = !controller.autoScroll.value;
@@ -237,7 +238,7 @@ class Overview extends StatelessWidget {
             ),
             // 复制日志按钮
             IconButton(
-              icon: const Icon(Icons.copy),
+              icon: const Icon(Icons.copy, size: 20),  // 设置图标大小为18
               onPressed: () {
                 if (controller.log.isNotEmpty) {
                   // 保持日志原有的格式，不添加额外的换行
@@ -254,7 +255,7 @@ class Overview extends StatelessWidget {
             ),
             // 清空日志按钮 - 使用垃圾桶图标
             IconButton(
-              icon: const Icon(Icons.delete),
+              icon: const Icon(Icons.delete, size: 20),  // 设置图标大小为18
               onPressed: () {
                 controller.clearLog();
                 // 显示提示信息

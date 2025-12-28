@@ -46,7 +46,7 @@ jobs:
         # 最新的发布url
         - name: Get latest release
           id: get_release
-          uses: actions/github-script@v7  # 建议升级到最新版
+          uses: actions/github-script@v4
           with:
             github-token: ${{ secrets.RELEASE_TOKEN }}
             script: |
@@ -54,27 +54,9 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
               });
-        
-              // 处理无 Release 的情况：创建一个新的初始 Release
-              if (releases.length === 0) {
-                const newRelease = await github.repos.createRelease({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  tag_name: 'v0.0.1',  // 初始版本标签
-                  name: 'Initial Release',
-                  body: 'First release of OASX',
-                  draft: false,
-                  prerelease: false,
-                });
-                core.setOutput('upload_url', newRelease.data.upload_url);
-                core.setOutput('tag_name', newRelease.data.tag_name);
-                core.setOutput('version', '0.0.1+1');
-                return;
-              }
-        
-              // 有 Release 时的逻辑
               const latestRelease = releases[0];
-              const version = latestRelease.tag_name.replace(/^v/, '') + '+1';
+              const version = latestRelease.tag_name.replace(/^v/, '') + '+1'
+              console.log(JSON.stringify(latestRelease, null, 2));
               core.setOutput('upload_url', latestRelease.upload_url);
               core.setOutput('tag_name', latestRelease.tag_name);
               core.setOutput('version', version);

@@ -54,9 +54,17 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
               });
+              // 处理无发布记录的情况
+              if (releases.length === 0) {
+                // 初始版本（例如 v0.0.1）
+                core.setOutput('upload_url', ''); // 首次发布可后续手动处理上传
+                core.setOutput('tag_name', 'v0.0.1');
+                core.setOutput('version', '0.0.1+1');
+                return;
+              }
+              // 有发布记录时的逻辑
               const latestRelease = releases[0];
-              const version = latestRelease.tag_name.replace(/^v/, '') + '+1'
-              console.log(JSON.stringify(latestRelease, null, 2));
+              const version = latestRelease.tag_name.replace(/^v/, '') + '+1';
               core.setOutput('upload_url', latestRelease.upload_url);
               core.setOutput('tag_name', latestRelease.tag_name);
               core.setOutput('version', version);
